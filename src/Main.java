@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,7 +23,7 @@ public class Main {
         if( array.length == 1 )
             return result;
 
-        short avg = 0;
+        short target = 0;
 
         for( short i = 0; i < array.length - 1; i++ ){
             short minTmp = (short)Math.min( array[i], array[ i + 1 ] );
@@ -31,16 +32,36 @@ public class Main {
                 result[ 0 ] = minTmp;
             }
             if( i == array.length - 2 )
-                avg += array[ i + 1 ];
-            avg += array[ i ];
+                target += array[ i + 1 ];
+            target += array[ i ];
             if( maxTmp > result[ 2 ] ) {
                 result[ 2 ] = maxTmp;
             }
         }
-        result[1] = (short)(avg / array.length);
+        target = (short)( target / array.length );
+        Arrays.sort(array);
+        // Search avg number from array by index
+        short avgIndex = (short)( Math.abs( Arrays.binarySearch(array, target) ) );
+        // new = avgIndex - 1;
+        if( avgIndex == 0 || avgIndex == array.length )
+            result[ 1 ] = array[ avgIndex ];
+        else {
+            short index = (short) Math.min(array[avgIndex], array[avgIndex - 1]);
+            if (array[avgIndex] != target)
+                result[1] = index;
+            else
+                result[1] = array[avgIndex];
+        }
         //For debugging:
 //        System.out.println( "Array length: " + (array.length ) );
-//        System.out.println( "Avg: " + avg );
+//        System.out.println( "Avg: " + target );
+//        System.out.println(" --- ");
+//        for( short a : array){
+//            System.out.print( a + " , ");
+//        }
+//        System.out.println();
+//        System.out.println(" --- ");
+
         return result;
     }
 
@@ -52,4 +73,5 @@ public class Main {
         }
         return array;
     }
+
 }
